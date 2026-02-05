@@ -116,13 +116,19 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? "bg-white/95 backdrop-blur-md shadow-sm py-4" : "bg-transparent py-6"}`}>
+    <nav 
+      className={`fixed w-full z-50 transition-all duration-300 ${
+        isScrolled 
+          ? "bg-slate-900/95 backdrop-blur-md shadow-md py-4 border-b border-white/10" 
+          : "bg-transparent py-6"
+      }`}
+    >
       <div className="container mx-auto px-6 flex justify-between items-center">
         <a href="#" className="flex items-center gap-2 z-50">
            <img 
             src={DATA.brand.logo} 
             alt="Hotel Calandre Logo" 
-            className="h-12 w-auto object-contain"
+            className="h-12 w-auto object-contain filter drop-shadow-md"
            />
         </a>
 
@@ -132,22 +138,27 @@ const Navbar = () => {
             <a 
               key={link.name} 
               href={link.href}
-              className={`text-sm font-medium tracking-wide hover:text-brand-red transition-colors ${isScrolled ? "text-slate-800" : "text-white drop-shadow-md"}`}
+              className={`text-sm font-medium tracking-wide transition-colors duration-300 ${
+                isScrolled 
+                  ? "text-slate-200 hover:text-white" // Texto claro no fundo escuro
+                  : "text-white hover:text-slate-200 drop-shadow-md" // Texto claro no fundo transparente
+              }`}
             >
               {link.name}
             </a>
           ))}
-          <Button href={DATA.contact.whatsapp} target="_blank" variant={isScrolled ? "primary" : "primary"}>
+          <Button href={DATA.contact.whatsapp} target="_blank" variant="primary">
             Reservar
           </Button>
         </div>
 
         {/* Mobile Toggle */}
         <button 
-          className="md:hidden z-50 text-brand-dark"
+          className="md:hidden z-50 focus:outline-none"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
-          <div className={`p-2 rounded-md ${isScrolled ? "text-slate-900" : "text-white"}`}>
+          {/* Força o ícone a ser branco sempre, ou escuro se o menu mobile estiver aberto (fundo branco) */}
+          <div className={`p-2 rounded-md transition-colors ${isMobileMenuOpen ? "text-slate-900" : "text-white"}`}>
             {isMobileMenuOpen ? <Icons.X /> : <Icons.Menu />}
           </div>
         </button>
@@ -159,7 +170,7 @@ const Navbar = () => {
               <a 
                 key={link.name} 
                 href={link.href}
-                className="text-2xl font-serif text-slate-800"
+                className="text-2xl font-serif text-slate-800 hover:text-brand-red transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {link.name}
@@ -215,6 +226,7 @@ interface FeatureCardProps {
   icon: React.ComponentType<any>;
   title: string;
   description: string;
+  key?: React.Key;
 }
 
 const FeatureCard = ({ icon: Icon, title, description }: FeatureCardProps) => (
